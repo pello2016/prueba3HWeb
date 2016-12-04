@@ -50,12 +50,12 @@ class Usuariostbl extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'username' => 'Username',
-            'password' => 'Password',
+            'username' => 'Usuario',
+            'password' => 'Clave',
             'nombre' => 'Nombre',
             'apellido' => 'Apellido',
-            'email' => 'Email',
-            'rolestbl_id' => 'Rolestbl ID',
+            'email' => 'Correo Electrónico',
+            'rolestbl_id' => 'Rol',
         ];
     }
 

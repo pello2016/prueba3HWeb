@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\ProductostblSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Productostbls';
+$this->title = 'Lista de Productos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="productostbl-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Productostbl', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Agregar Nuevo Producto', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -24,11 +24,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            // 'id',
             'producto',
             'descripcion',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
+    
+    <div>
+        <a class="btn btn-default" href="../web/index.php">Volver al Inicio &raquo;</a>
+    </div>
 </div>

@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\RecetastblSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Recetastbls';
+$this->title = 'Lista de Recetas';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="recetastbl-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Recetastbl', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Crear Nueva Receta', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -24,13 +24,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            // 'id',
             'receta',
             'descripcion',
-            'preparacion',
+            // 'preparacion',
             'usuariostbl_id',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
+    
+    <div>
+        <a class="btn btn-default" href="../web/index.php">Volver al Inicio &raquo;</a>
+    </div>
 </div>

@@ -50,9 +50,9 @@ class Recetastbl extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'receta' => 'Receta',
-            'descripcion' => 'Descripcion',
-            'preparacion' => 'Preparacion',
-            'usuariostbl_id' => 'Usuariostbl ID',
+            'descripcion' => 'Descripción',
+            'preparacion' => 'Preparación',
+            'usuariostbl_id' => 'Usuario',
         ];
     }
 

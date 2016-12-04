@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\UsuariostblSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Usuariostbls';
+$this->title = 'Lista de Usuarios';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="usuariostbl-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Usuariostbl', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Registrar Nuevo Usuario', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -24,9 +24,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            // 'id',
             'username',
-            'password',
+            // 'password',
             'nombre',
             'apellido',
             // 'email:email',
@@ -35,4 +35,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
+    
+    <div>
+        <a class="btn btn-default" href="../web/index.php">Volver al Inicio &raquo;</a>
+    </div>
 </div>

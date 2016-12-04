@@ -43,7 +43,7 @@ class Productostbl extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'producto' => 'Producto',
-            'descripcion' => 'Descripcion',
+            'descripcion' => 'Descripción',
         ];
     }
 

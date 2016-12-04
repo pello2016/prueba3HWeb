@@ -47,8 +47,8 @@ class Recetasproducto extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'recetastbl_id' => 'Recetastbl ID',
-            'productostbl_id' => 'Productostbl ID',
+            'recetastbl_id' => 'Receta',
+            'productostbl_id' => 'Producto',
             'cantidad' => 'Cantidad',
             'unidad' => 'Unidad',
         ];

@@ -2,52 +2,37 @@
 
 /* @var $this yii\web\View */
 
-$this->title = 'My Yii Application';
+$this->title = 'Inicio';
 ?>
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1>Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+        <h1>Cocineros Unidos</h1>
+        <p class="lead">Bienvenido/a! Aquí podrás compartir tus recetas con otros cocineros a nivel mundial!</p>
     </div>
 
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
+    <div class="row">
+        <div class="col-md-3">
+            <h2>Productos</h2>
+            <p>
+                Ver los Productos que existen actualmente para su uso en las Recetas. Si eres Administrador, podrás añadirlos.
+            </p>
+            <p><a class="btn btn-default" href="../web/index.php?r=productostbl">Ir a Productos &raquo;</a></p>
         </div>
-
+        <div class="col-md-3">
+            <h2>Recetas</h2>
+            <p>Ver, crear, valorar y editar Recetas. Sólo si eres el Creador de una Receta, tienes el derecho a editarla/eliminarla.</p>
+            <p><a class="btn btn-default" href="../web/index.php?r=recetastbl">Ir a Recetas &raquo;</a></p>
+        </div>
+        <div class="col-md-3">
+            <h2>Usuarios</h2>
+            <p>Ver los Usuarios Registrados previamente que participan en nuestra Comunidad.</p>
+            <p><a class="btn btn-default" href="../web/index.php?r=usuariostbl">Ir a Usuarios &raquo;</a></p>
+        </div>
+        <div class="col-md-3">
+            <h2>Ranking</h2>
+            <p>Acceder al Ranking de Cocineros con más Estrellas, y Recetas Mejor Valoradas.</p>
+            <p><a class="btn btn-default" href="../web/index.php?r=ranking">Ir a Ranking &raquo;</a></p>
+        </div>
     </div>
 </div>
