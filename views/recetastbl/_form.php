@@ -14,11 +14,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'receta')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'descripcion')->textarea(['maxlength' => true]); ?>
 
-    <?= $form->field($model, 'preparacion')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'preparacion')->textarea(['maxlength' => true]); ?>
 
-    <?= $form->field($model, 'usuariostbl_id')->textInput() ?>
+    <?= $form->field($model, 'usuariostbl_id')->dropDownList($items, ['prompt'=>'-Elija un Usuario-']) ?>
 
     <div hidden>
         <div class="form-group" id="lista">

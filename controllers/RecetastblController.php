@@ -65,7 +65,7 @@ class RecetastblController extends Controller
     public function actionCreate()
     {
         $model = new Recetastbl();
-        
+        $items = ArrayHelper::map(\app\models\Usuariostbl::find()->all(), 'id', 'username');
         
         if ($model->load(Yii::$app->request->post()) ){// && $model->save()) {
             $ingredientes = Yii::$app->request->post('ingrediente');
@@ -82,6 +82,7 @@ class RecetastblController extends Controller
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'items' => $items
             ]);
         }
         
@@ -96,12 +97,14 @@ class RecetastblController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $items = ArrayHelper::map(\app\models\Usuariostbl::find()->all(), 'id', 'username');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'items' => $items
             ]);
         }
     }

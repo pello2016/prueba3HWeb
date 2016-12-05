@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Productostbl */
 
-$this->title = 'Create Productostbl';
-$this->params['breadcrumbs'][] = ['label' => 'Productostbls', 'url' => ['index']];
+$this->title = 'Agregar Producto';
+$this->params['breadcrumbs'][] = ['label' => 'Lista de Productos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="productostbl-create">

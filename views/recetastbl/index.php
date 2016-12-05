@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'receta',
             'descripcion',
             // 'preparacion',
-            'usuariostbl_id',
+            'usuariostbl.nombre',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

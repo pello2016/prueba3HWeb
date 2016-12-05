@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Recetastbl */
 
-$this->title = 'Update Recetastbl: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Recetastbls', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->title = 'Modificar Receta: ' . $model->receta;
+$this->params['breadcrumbs'][] = ['label' => 'Lista de Recetas', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->receta, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = 'Modificar';
 ?>
 <div class="recetastbl-update">
 
@@ -16,6 +16,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'items' => $items
     ]) ?>
 
 </div>
