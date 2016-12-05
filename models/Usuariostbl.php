@@ -111,7 +111,17 @@ class Usuariostbl extends \yii\db\ActiveRecord implements \yii\web\IdentityInter
     }
     
     public function validatePassword($password) {
-        return $this->password === $password;
+        //se cambia la validacion por defecto a validacion de clave encriptada
+        $user = Usuariostbl::findOne(['username'=>$this->username]);
+        if ($user!=null) {
+            //busca al usuario en la bd, y si no es null, obtiene el hash y lo compara
+            $hash = $user->password;
+            if(Yii::$app->getSecurity()->validatePassword($password, $hash)) {
+                //de ser iguales, puede iniciar sesion
+                return true;
+            }
+        }
+        return false;
     }
     
 }

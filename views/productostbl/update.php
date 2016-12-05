@@ -5,9 +5,9 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Productostbl */
 
-$this->title = 'Update Productostbl: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Productostbls', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->title = 'Modificar Producto: ' . $model->producto;
+$this->params['breadcrumbs'][] = ['label' => 'Lista de Productos', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->producto, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="productostbl-update">

@@ -67,7 +67,10 @@ class UsuariostblController extends Controller
         $model = new Usuariostbl();
         $items = ArrayHelper::map(\app\models\Rolestbl::find()->all(), 'id', 'rol');
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $hash = Yii::$app->getSecurity()->generatePasswordHash($model->password);
+            $model->password = $hash;
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -88,7 +91,10 @@ class UsuariostblController extends Controller
         $model = $this->findModel($id);
         $items = ArrayHelper::map(\app\models\Rolestbl::find()->all(), 'id', 'rol');
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $hash = Yii::$app->getSecurity()->generatePasswordHash($model->password);
+            $model->password = $hash;
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
