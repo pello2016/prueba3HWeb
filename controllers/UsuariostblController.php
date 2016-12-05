@@ -8,6 +8,7 @@ use app\models\UsuariostblSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * UsuariostblController implements the CRUD actions for Usuariostbl model.
@@ -64,12 +65,14 @@ class UsuariostblController extends Controller
     public function actionCreate()
     {
         $model = new Usuariostbl();
+        $items = ArrayHelper::map(\app\models\Rolestbl::find()->all(), 'id', 'rol');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'items' => $items
             ]);
         }
     }
@@ -83,12 +86,14 @@ class UsuariostblController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $items = ArrayHelper::map(\app\models\Rolestbl::find()->all(), 'id', 'rol');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'items' => $items
             ]);
         }
     }
