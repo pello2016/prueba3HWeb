@@ -8,6 +8,7 @@ use app\models\RecetastblSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * RecetastblController implements the CRUD actions for Recetastbl model.
@@ -64,14 +65,26 @@ class RecetastblController extends Controller
     public function actionCreate()
     {
         $model = new Recetastbl();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        
+        
+        if ($model->load(Yii::$app->request->post()) ){// && $model->save()) {
+            $ingredientes = Yii::$app->request->post('ingrediente');
+            $cantidades = Yii::$app->request->post('cantidad');
+            $unidades = Yii::$app->request->post('unidad');
+            
+            $cont = 0;
+            foreach($cantidades as $cantidad){
+                $cont++;
+                echo 'ingrediente id '.$cont.' '.$ingredientes[$cont].' cantidad: '.$cantidad.' unidad: '.$unidades[$cont-1];
+                echo '</br>';
+            }
+            //return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
             ]);
         }
+        
     }
 
     /**
@@ -282,6 +295,18 @@ class RecetastblController extends Controller
 
         //Este return lo puse solo para relleno, no se que retornar aun
         //return $this->redirect(['index']);
+    }
+    
+    /**
+     * Metodo retorna un array con el id y nombre de los
+     * productos que existan en la BD
+     */
+    public function getProductos()
+    {
+        //ArrayHelper::map()
+        //$productosArray = //CHtml::listData(\app\models\Productostbl::model()->findAll(), 'id', 'producto');
+        $productosArray = ArrayHelper::map(\app\models\Productostbl::find()->all(), 'id', 'producto');
+        return $productosArray;
     }
 
     /**

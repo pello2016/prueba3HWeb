@@ -1,6 +1,8 @@
 <?php
 
 use yii\helpers\Html;
+use app\models\Productostbl;
+use yii\helpers\ArrayHelper;
 
 
 /* @var $this yii\web\View */
@@ -17,5 +19,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>
+    
+    
 
 </div>
+<script src="/prueba3hweb/web/scripts/funciones.js" type="text/javascript"></script>
