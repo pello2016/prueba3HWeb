@@ -123,30 +123,14 @@ class PuntuaciontblController extends Controller {
             $myArray[$index][2] = $acumulado;
             
             $index++;
-        }
-        //arsort($myArray);
-        //array_multisort($myArray, SORT_NUMERIC,SORT_DESC);
+        } 
         $cont = 0;
         $cont1 = 0;
-        $cont2 = 1;
         $ultimoMayor = -2;
         $primeraVuelta = true;
-        echo '<link href="/prueba3hweb/web/assets/7668a6c7/css/bootstrap.css" rel="stylesheet">';
-        echo '<script src="/prueba3hweb/web/assets/ec8baf58/jquery.js"></script><script src="/prueba3hweb/web/assets/88c8d4fd/yii.js"></script><script src="/prueba3hweb/web/assets/7668a6c7/js/bootstrap.js"></script>';
-        echo '<div class="container">
-  <h2>Cocineros con más estrellas acumuladas</h2>
-  </br>           
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>Lugar</th>
-        <th>Cocinero</th>
-        <th>Total Estrellas</th>
-      </tr>
-    </thead>
-    <tbody>';
 
-        //Calcula e imprime en orden de mayor a menor estrellas acumuladas
+        $indexArray = 0;
+        //Calcula y guarda en orden de mayor a menor estrellas acumuladas
         while ($cont1 < $index) {
             $mayor = -1;
             while ($cont < $index) {
@@ -163,12 +147,11 @@ class PuntuaciontblController extends Controller {
                 }
                 if ($cont == $index - 1) {
 
-                    echo '<tr>
-                            <td>' . $cont2 . '</td>
-                            <td>' . $mayorAr[0]->nombre . ' '.$mayorAr[0]->apellido.'</td>
-                            <td>' . $mayorAr[1] . '</td>
-                        </tr>';
-                    $cont2++;
+                    //almacena los datos a ser enviados en el orden mayor a menor
+                    $cocinerosArray[$indexArray] = $mayorAr[0];
+                    $cantidadesArray[$indexArray] = $mayorAr[1];
+                    $indexArray++;
+                    
                     $ultimoMayor = $mayorAr[1];
                 }
 
@@ -177,11 +160,12 @@ class PuntuaciontblController extends Controller {
             $primeraVuelta = false;
             $cont = 0;
             $cont1++;
-        }
-        echo '</tbody></table></div>';
+        } 
 
-        //Este return lo puse solo para relleno, no se que retornar aun
-        //return $this->redirect(['index']);
+        return $this->render('masestrellas', [
+                'cocinerosArray' => $cocinerosArray,
+                'cantidadesArray' => $cantidadesArray
+            ]);
     }
     
     

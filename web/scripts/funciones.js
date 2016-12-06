@@ -17,9 +17,9 @@ function addIngredientes() {
 
 
     // Clear previous contents of the container
-    while (container.hasChildNodes()) {
-        container.removeChild(container.lastChild);
-    }
+    //while (container.hasChildNodes()) {
+    //    container.removeChild(container.lastChild);
+    //}
     for (i = 0; i < number; i++) {
         var data = "";
 
@@ -46,8 +46,8 @@ function addIngredientes() {
         data += "<div class='row'>";
         data += "<label class='control-label col-md-2'>Unidad " + (i + 1) + "</label>";   
         data += "<div class='col-xs-7'><input type='text' name='unidad[]' id='unidad'></div>";      
-        data += "</div>"
-        data += "</div>"
+        data += "</div>";
+        data += "</div>";
         container.innerHTML += data;
 
         //agrega un espacio y un separador

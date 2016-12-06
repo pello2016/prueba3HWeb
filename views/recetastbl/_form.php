@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'preparacion')->textarea(['maxlength' => true]); ?>
 
-    <?= $form->field($model, 'usuariostbl_id')->dropDownList($items, ['prompt'=>'-Elija un Usuario-']) ?>
+    <?= $form->field($model, 'usuariostbl_id')->dropDownList($items, ['prompt' => '-Elija un Usuario-']) ?>
 
     <div hidden>
         <div class="form-group" id="lista">
@@ -42,16 +42,53 @@ use yii\widgets\ActiveForm;
 
     </div>
 
+    <?php
+    //Se llama al metodo que retorna todos los ingredientes para esta receta.
+    $model2Array = $this->context->getIngredientes($model->id)
+    ?>
     <div id="container-recetas" style="padding-left:50px">
+        <?php
+        //solo se ejecuta si el array es distinto de null
+        foreach ($model2Array as $ingrediente) {
+            ?>
+            <div class="form-group" id="lista">
+                <div class="row">
+                    <label class="control-label col-md-2">Ingrediente</label>  
+                    <div class="col-xs-5" style="padding-top: 7px;">
+                    <?php echo Html::dropDownList('ingrediente[]', 'id', $this->context->getProductos(), ['options' => [$ingrediente->productostbl->id => ['Selected' => true]]]); ?>
+                    </div>
+                </div>
+            </div>
+        <div class="form-group">
+            <div class="row">
+                <label class="control-label col-md-2">Cantidad</label>
+                <div class="col-xs-7">
+                    <input type="text" name="cantidad[]" id="cantidad" value=<?=$ingrediente->cantidad?>>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <label class="control-label col-md-2">Unidad</label>
+                <div class="col-xs-7">
+                    <input type="text" name="unidad[]" id="unidad" value=<?=$ingrediente->unidad?>>
+                </div>
+            </div>
+        </div>
+        <hr>
+
+            <?php
+        }
+        ?> 
 
     </div>
 
     <div class="form-group">
         <div class="row">
-            <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+<?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
         </div>
     </div>
 
-    <?php ActiveForm::end(); ?>
+<?php ActiveForm::end(); ?>
 
 </div>

@@ -20,3 +20,4 @@ $this->params['breadcrumbs'][] = 'Modificar';
     ]) ?>
 
 </div>
+<script src="/prueba3hweb/web/scripts/funciones.js" type="text/javascript"></script>
