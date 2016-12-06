@@ -65,14 +65,22 @@ class UsuariostblController extends Controller
     public function actionCreate()
     {
         $model = new Usuariostbl();
+        //se crea una variable items, en la que se guardaran los roles de la tabla
         $items = ArrayHelper::map(\app\models\Rolestbl::find()->all(), 'id', 'rol');
 
         if ($model->load(Yii::$app->request->post())) {
+            //si la vista se carga mediante post (el usuario presiono el boton submit)
+            //se creara una variable hash en la que se generara una clave encriptada
             $hash = Yii::$app->getSecurity()->generatePasswordHash($model->password);
+            //luego, se le dice a la clave del modelo que sea igual a la clave encriptada
             $model->password = $hash;
+            //finalmente, se guarda en la bd y se redirige a la vista de detalles
             $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
+            //si no, la llamada es mediante get, por lo que debe renderizar la vista
+            //con todos los elementos correspondientes al modelo, y adicionalmente
+            //el arreglo de items que creamos previamente
             return $this->render('create', [
                 'model' => $model,
                 'items' => $items
@@ -88,6 +96,7 @@ class UsuariostblController extends Controller
      */
     public function actionUpdate($id)
     {
+        //en modificar se aplica el mismo principio de crear
         $model = $this->findModel($id);
         $items = ArrayHelper::map(\app\models\Rolestbl::find()->all(), 'id', 'rol');
 

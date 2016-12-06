@@ -121,6 +121,7 @@ class Usuariostbl extends \yii\db\ActiveRecord implements \yii\web\IdentityInter
                 return true;
             }
         }
+        //caso contrario, retorna falso y se mantiene en la vista de login
         return false;
     }
     

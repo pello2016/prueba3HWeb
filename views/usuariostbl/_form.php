@@ -22,6 +22,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
+    <!-- aqui se recibe el arreglo items con los elementos de la tabla de roles en un dropdown -->
     <?= $form->field($model, 'rolestbl_id')->dropDownList($items, ['prompt'=>'-Elija un Rol-']) ?>
 
     <div class="form-group">
