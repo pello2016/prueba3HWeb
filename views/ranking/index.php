@@ -11,13 +11,13 @@ $this->title = 'Ranking';
     <table class="table">
         <tr>
             <th>
-                <a class="btn btn-default" href="../web/index.php?r=usuariostbl/moststarsuser">Cocineros con más Estrellas</a>
+                <a class="btn btn-default" href="../web/index.php?r=puntuaciontbl/masestrellas">Cocineros con más Estrellas</a>
             </th>
             <th>
-                <a class="btn btn-default" href="../web/index.php?r=usuariostbl/mostrecipesuser">Cocineros con más Recetas</a>
+                <a class="btn btn-default" href="../web/index.php?r=recetastbl/masrecetas">Cocineros con más Recetas</a>
             </th>
             <th>
-                <a class="btn btn-default" href="../web/index.php?r=usuariostbl/bestrankingrecipes">Recetas Mejor Valoradas</a>
+                <a class="btn btn-default" href="../web/index.php?r=recetastbl/mpromestrellas">Recetas Mejor Valoradas</a>
             </th>
         </tr>
     </table>
