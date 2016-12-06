@@ -13,13 +13,12 @@ use yii\helpers\ArrayHelper;
 /**
  * RecetastblController implements the CRUD actions for Recetastbl model.
  */
-class RecetastblController extends Controller
-{
+class RecetastblController extends Controller {
+
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -34,14 +33,13 @@ class RecetastblController extends Controller
      * Lists all Recetastbl models.
      * @return mixed
      */
-    public function actionIndex()
-    {
+    public function actionIndex() {
         $searchModel = new RecetastblSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -50,10 +48,9 @@ class RecetastblController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
-    {
+    public function actionView($id) {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+                    'model' => $this->findModel($id),
         ]);
     }
 
@@ -62,36 +59,34 @@ class RecetastblController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
+    public function actionCreate() {
         $model = new Recetastbl();
         $items = ArrayHelper::map(\app\models\Usuariostbl::find()->all(), 'id', 'username');
-        
-        if ($model->load(Yii::$app->request->post())  && $model->save()) {
-            
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
             //Se reciben los 3 arreglos enviados atraves de post
             $ingredientes = Yii::$app->request->post('ingrediente');
             $cantidades = Yii::$app->request->post('cantidad');
             $unidades = Yii::$app->request->post('unidad');
-            
+
             //Al momento de hacer $model->save, el model contendra la ID AutoIncrementable asignada por la BD
-            $index = 0;//contador usado para recorrer ciertos elementos de los arreglos
+            $index = 0; //contador usado para recorrer ciertos elementos de los arreglos
             //se corren todos los elementos correspondientes a los ingredientes
-            foreach($cantidades as $cantidad){
+            foreach ($cantidades as $cantidad) {
                 //para la lista de ingredientes inicia en 1 y no 0
-                
                 //se crea una nueva variable que guardara el nuevo ingrediente
-                $ingredienteModel = new \app\models\Recetasproducto(); 
-                
+                $ingredienteModel = new \app\models\Recetasproducto();
+
                 //se asocia a la receta usando la id
                 $ingredienteModel->recetastbl_id = $model->id;
                 //se asocia el producto (ingrediente) usando su id
-                $ingredienteModel->productostbl_id = $ingredientes[$index+1];
+                $ingredienteModel->productostbl_id = $ingredientes[$index + 1];
                 //se agrega la cantidad
                 $ingredienteModel->cantidad = $cantidad;
                 //se agrega la unidad de medida
                 $ingredienteModel->unidad = $unidades[$index];
-                    
+
                 //se guarda el ingrediente en la BD
                 $ingredienteModel->save();
                 $index++;
@@ -99,11 +94,10 @@ class RecetastblController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
-                'model' => $model,
-                'items' => $items
+                        'model' => $model,
+                        'items' => $items
             ]);
         }
-        
     }
 
     /**
@@ -112,8 +106,7 @@ class RecetastblController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id) {
         $model = $this->findModel($id);
         $items = ArrayHelper::map(\app\models\Usuariostbl::find()->all(), 'id', 'username');
 
@@ -121,47 +114,46 @@ class RecetastblController extends Controller
             //Se reciben los 3 arreglos enviados atraves de post
             $ingredientes = Yii::$app->request->post('ingrediente');
             $cantidades = Yii::$app->request->post('cantidad');
-            $unidades = Yii::$app->request->post('unidad');          
-            
+            $unidades = Yii::$app->request->post('unidad');
+
             //se deben buscar en la BD todos los ingredientes asociados a esta receta
-            $ingredientesEnBD =  \app\models\Recetasproducto::find()->where(['recetastbl_id' => $id])->all();
+            $ingredientesEnBD = \app\models\Recetasproducto::find()->where(['recetastbl_id' => $id])->all();
             $index = 0;
-            
+
             //Se recorren los ingredientes que habia en la BD
-            foreach($ingredientesEnBD as $ingrediente){
+            foreach ($ingredientesEnBD as $ingrediente) {
                 //se reemplazan sus valores por los contenidos en los arreglos correspondientes.
-                $ingrediente->productostbl_id = $ingredientes[$index+1];
+                $ingrediente->productostbl_id = $ingredientes[$index + 1];
                 $ingrediente->cantidad = $cantidades[$index];
                 $ingrediente->unidad = $unidades[$index];
                 $ingrediente->save(); //se guardan los nuevos datos en la BD
                 $index++;
             }
-            
+
             //En caso que hayan nuevos ingredientes, este for los genera y guarda en la BD
-            for($index;$index < count($cantidades); $index++){
+            for ($index; $index < count($cantidades); $index++) {
                 //para la lista de ingredientes es index+1
-                
                 //se crea una nueva variable que guardara el nuevo ingrediente
                 $ingredienteModel = new \app\models\Recetasproducto();
-                
+
                 //se asocia a la receta usando la id
                 $ingredienteModel->recetastbl_id = $model->id;
                 //se asocia el producto (ingrediente) usando su id
-                $ingredienteModel->productostbl_id = $ingredientes[$index+1];
+                $ingredienteModel->productostbl_id = $ingredientes[$index + 1];
                 //se agrega la cantidad
                 $ingredienteModel->cantidad = $cantidades[$index];
                 //se agrega la unidad de medida
-                $ingredienteModel->unidad = $unidades[$index];               
-                
+                $ingredienteModel->unidad = $unidades[$index];
+
                 //se guarda el ingrediente en la BD
                 $ingredienteModel->save();
-            }         
-            
+            }
+
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
-                'model' => $model,
-                'items' => $items
+                        'model' => $model,
+                        'items' => $items
             ]);
         }
     }
@@ -172,25 +164,25 @@ class RecetastblController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
-    {
+    public function actionDelete($id) {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
-    
+
     /**
      * Responde a la url "http://localhost/prueba3hweb/web/index.php?r=recetastbl/masrecetas"
      * Ranking de los cocineros con mas recetas.
      */
-    public function actionMasrecetas() { 
+    public function actionMasrecetas() {
         $cocineros = \app\models\Usuariostbl::find()->all();
         $recetas = Recetastbl::find()->all();
         $index = 0;
+
+
         foreach ($cocineros as $cocinero) {
             $index;
             $cuentaRecetas = 0;
-            $myArray[$index][1] = $cocinero;
             foreach ($recetas as $receta) {
 
                 if ($receta->usuariostbl_id == $cocinero->id) {
@@ -198,149 +190,138 @@ class RecetastblController extends Controller
                     $cuentaRecetas++;
                 }
             }
-            $myArray[$index][2] = $cuentaRecetas;
+            $cantidadRecetas[$index] = $cuentaRecetas;
             $index++;
         }
 
-        $cont = 0;
-        $cont1 = 0; 
-        $ultimoMayor = -2;
-        $primeraVuelta = true; 
 
-        $indexArray = 0; 
-               
-        //Calcula e imprime en orden de mayor a menor cantidad de recetas
-        while ($cont1 < $index) {
-            $mayor = -1;
-            while ($cont < $index) {
-                if (($myArray[$cont][2] > $mayor && $ultimoMayor > $myArray[$cont][2]) || ($primeraVuelta && $myArray[$cont][2] > $mayor)) {
-                    $mayor = $myArray[$cont][2];
-                    $mayorAr[0] = $myArray[$cont][1];
-                    $mayorAr[1] = $myArray[$cont][2];
-                } else {
-                    if ($ultimoMayor == 0 && $myArray[$cont][2] == 0) {
-                        $mayor = $myArray[$cont][2];
-                        $mayorAr[0] = $myArray[$cont][1];
-                        $mayorAr[1] = $myArray[$cont][2];
+        rsort($cantidadRecetas);
+
+        $index2 = 0;
+        while ($index2 < count($cantidadRecetas)) {
+
+
+            //$cantidadRecetas;
+            foreach ($cocineros as $cocinero) {
+
+                $cuentaRecetas = 0;
+                foreach ($recetas as $receta) {
+
+                    if ($receta->usuariostbl_id == $cocinero->id) {
+
+                        $cuentaRecetas++;
                     }
                 }
-                if ($cont == $index - 1) {
-
-                    //almacena los datos a ser enviados en el orden mayor a menor
-                    $cocinerosArray[$indexArray] = $mayorAr[0];
-                    $cantidadesArray[$indexArray] = $mayorAr[1];
-                    $indexArray++; 
-                    
-                    $ultimoMayor = $mayorAr[1];
+                if ($cantidadRecetas[$index2] == $cuentaRecetas) {
+                    $cocinerosArray[$index2] = $cocinero;
+                    $index2++;
                 }
-
-                $cont++;
+                if ($index2 == count($cantidadRecetas)) {
+                    break;
+                }
             }
-            $primeraVuelta = false;
-            $cont = 0;
-            $cont1++;
         }
 
         return $this->render('rmasrecetas', [
-                'cocinerosArray' => $cocinerosArray,
-                'cantidadesArray' => $cantidadesArray
-            ]);
+                    'cocinerosArray' => $cocinerosArray,
+                    'cantidadRecetas' => $cantidadRecetas//$cantidadesArray
+        ]);
     }
-    
+
     /**
      * Responde a la url "http://localhost/prueba3hweb/web/index.php?r=recetastbl/mpromestrellas"
      * Ranking de los cocineros con mas recetas.
      */
-    public function actionMpromestrellas() { 
+    public function actionMpromestrellas() {
         $puntuaciones = \app\models\Puntuaciontbl::find()->all();
         $recetas = Recetastbl::find()->all();
         $index = 0;
+        
+        //recorre recetas y para cada receta, recorre las puntuaciones.
         foreach ($recetas as $receta) {
-            $index;
             $cuentaRecetas = 0;
             $valorAcumulado = 0;
             $promedio = 0;
             $myArray[$index][1] = $receta;
             foreach ($puntuaciones as $puntuacion) {
-
+                //si corresponde valoracion de esta receta
                 if ($puntuacion->recetastbl_id == $receta->id) {
                     $valorAcumulado += $puntuacion->valoracion;
                     $cuentaRecetas++;
                 }
             }
-            if($cuentaRecetas == 0)
-            {
+            //calcula promedio dependiendo de la cantidad de valoraciones y recetas.
+            if ($cuentaRecetas == 0) {
                 $promedio = 0;
-                $myArray[$index][2] = $promedio;
-            }else
-            {
-                $promedio =(1.00*$valorAcumulado)/(1.00*$cuentaRecetas);
-                $myArray[$index][2] = $promedio;
+            } else {
+                $promedio = (1.00 * $valorAcumulado) / (1.00 * $cuentaRecetas);
             }
-            
+            //guarda el promedio resultante en el arreglo
+            $promediosArray[$index] = $promedio;
+
             $index++;
         }
-        $cont = 0;
-        $cont1 = 0; 
-        $ultimoMayor = -2;
-        $primeraVuelta = true;
 
-        $indexArray = 0;
-        //Calcula e imprime en orden de mayor a menor promedio de estrellas
-        while ($cont1 < $index) {
-            $mayor = -1;
-            while ($cont < $index) {
-                if (($myArray[$cont][2] > $mayor && $ultimoMayor > $myArray[$cont][2]) || ($primeraVuelta && $myArray[$cont][2] > $mayor)) {
-                    $mayor = $myArray[$cont][2];
-                    $mayorAr[0] = $myArray[$cont][1];
-                    $mayorAr[1] = $myArray[$cont][2];
-                } else {
-                    if ($ultimoMayor == 0 && $myArray[$cont][2] == 0) {
-                        $mayor = $myArray[$cont][2];
-                        $mayorAr[0] = $myArray[$cont][1];
-                        $mayorAr[1] = $myArray[$cont][2];
+        //ordena promedios de mayor a menor
+        rsort($promediosArray);
+
+        $index2 = 0;
+        //recorre el arreglo de promedios ya ordenado.
+        while ($index2 < count($promediosArray)) {
+            //recorre cada receta y si el promedio coincide con el almacenado en $promediosArray, se guarda la receta.
+            //dentro de una arreglo de recetas, para que de esta forma esten en el mismo orden que los promedios
+            foreach ($recetas as $receta) {
+                $cuentaRecetas = 0;
+                $valorAcumulado = 0;
+                $promedio = 0;
+                foreach ($puntuaciones as $puntuacion) {
+
+                    if ($puntuacion->recetastbl_id == $receta->id) {
+                        $valorAcumulado += $puntuacion->valoracion;
+                        $cuentaRecetas++;
                     }
                 }
-                if ($cont == $index - 1) {
-
-                    //almacena los datos a ser enviados en el orden mayor a menor
-                    $recetasArray[$indexArray] = $mayorAr[0];
-                    $cantidadesArray[$indexArray] = $mayorAr[1];
-                    $indexArray++;
-                    
-                    $ultimoMayor = $mayorAr[1];
+                if ($cuentaRecetas == 0) {
+                    $promedio = 0;
+                } else {
+                    $promedio = (1.00 * $valorAcumulado) / (1.00 * $cuentaRecetas);
                 }
-
-                $cont++;
+                //si el promedio es igual al del arreglo de promedios
+                if ($promediosArray[$index2] == $promedio) {
+                    //se guarda la receta
+                    $recetasArray[$index2] = $receta;
+                    $index2++;
+                }
+                if ($index2 == count($promediosArray)) {
+                    //para evitar que se salga del indice maximo, se hace un break.
+                    //ya que tendriamos todas las recetas almacenadas
+                    break;
+                }
             }
-            $primeraVuelta = false;
-            $cont = 0;
-            $cont1++;
         }
+        
 
         return $this->render('mpromestrellas', [
-                'recetasArray' => $recetasArray,
-                'cantidadesArray' => $cantidadesArray
-            ]);
+                    'recetasArray' => $recetasArray,
+                    'promediosArray' => $promediosArray
+        ]);
     }
-    
+
     /**
      * Metodo retorna un array con el id y nombre de los
      * productos que existan en la BD
      */
-    public function getProductos()
-    {
+    public function getProductos() {
         $productosArray = ArrayHelper::map(\app\models\Productostbl::find()->all(), 'id', 'producto');
         return $productosArray;
     }
-    
+
     /**
      * Metodo retorna un array con los objetos de ingredientes asociados a la receta
      * 
      */
-    public function getIngredientes($id)
-    {
-        $ingredientesArray = \app\models\Recetasproducto::find()->where(['recetastbl_id' => $id])->all(); 
+    public function getIngredientes($id) {
+        $ingredientesArray = \app\models\Recetasproducto::find()->where(['recetastbl_id' => $id])->all();
         return $ingredientesArray;
     }
 
@@ -351,12 +332,12 @@ class RecetastblController extends Controller
      * @return Recetastbl the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
-    {
+    protected function findModel($id) {
         if (($model = Recetastbl::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
 }
