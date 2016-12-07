@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <td><?= $i + 1 ?></td>
                     <td><?= $recetasArray[$i]->receta?></td>
                     <td><?= $recetasArray[$i]->usuariostbl->nombre ?> <?= $recetasArray[$i]->usuariostbl->apellido ?></td>
-                    <td><?= $cantidadesArray[$i] ?></td>
+                    <td><?= $promediosArray[$i] ?></td>
                 </tr>
 
 
