@@ -7,7 +7,8 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\RecetastblSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Cocineros con más Estrellas Acumuladas';
+$this->title = 'Cocineros con más Estrellas';
+$this->params['breadcrumbs'][] = ['label' => 'Ranking', 'url' => ['ranking/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="recetastbl-index">

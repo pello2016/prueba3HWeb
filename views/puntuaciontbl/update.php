@@ -4,6 +4,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Puntuaciontbl */
+/* @var $model2 app\models\Recetastbl */
 
 $this->title = 'Update Puntuaciontbl: ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Puntuaciontbls', 'url' => ['index']];
@@ -16,6 +17,9 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'model2' => $model2,
+        'usuarios' => $usuarios,
+        'recetas' => $recetas
     ]) ?>
 
 </div>

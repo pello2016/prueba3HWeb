@@ -8,6 +8,7 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Cocineros con más Recetas';
+$this->params['breadcrumbs'][] = ['label' => 'Ranking', 'url' => ['ranking/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="recetastbl-index">

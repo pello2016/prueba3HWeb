@@ -46,8 +46,8 @@ class Puntuaciontbl extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'valoracion' => 'Valoración',
-            'usuariostbl_id' => 'Usuario',
-            'recetastbl_id' => 'Receta',
+            'usuariostbl_id' => 'Usuario que Valora',
+            'recetastbl_id' => 'Receta que Valora',
         ];
     }
 

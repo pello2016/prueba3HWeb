@@ -18,6 +18,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
+        <!--en la vista de detalles, se agrega un boton valorar que toma el id de la receta y la utiliza para  
+            mostrar datos de la misma en la vista de valorar. aqui, se ingresan los datos y se guarda en bd -->
+        <?= Html::a('Valorar', ['puntuaciontbl/create', 'id' => $model->id], ['class' => 'btn btn-warning']) ?>
         <?= Html::a('Modificar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?=
         Html::a('Eliminar', ['delete', 'id' => $model->id], [

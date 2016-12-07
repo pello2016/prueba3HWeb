@@ -3,6 +3,7 @@
 /* @var $this yii\web\View */
 
 $this->title = 'Ranking';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ranking-index">
 

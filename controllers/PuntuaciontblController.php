@@ -5,9 +5,11 @@ namespace app\controllers;
 use Yii;
 use app\models\Puntuaciontbl;
 use app\models\PuntuaciontblSearch;
+use app\models\Recetastbl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * PuntuaciontblController implements the CRUD actions for Puntuaciontbl model.
@@ -58,14 +60,30 @@ class PuntuaciontblController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate() {
+    public function actionCreate($id) {
         $model = new Puntuaciontbl();
+        //mediante el id que se recibe, se acceden a los datos de la receta de la cual proviene
+        //la llamada, para asi, referenciarlos a la vista
+        $model2 = Recetastbl::findOne($id);
+        //ademas, se le envian arreglos con los usuarios y las recetas, para poder ser elegidas
+        //mediante un dropdown en la vista
+        $usuarios = ArrayHelper::map(\app\models\Usuariostbl::find()->all(), 'id', 'username');
+        $recetas = ArrayHelper::map(\app\models\Recetastbl::find()->all(), 'id', 'receta');
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        //se deshabilito el guardado en la bd con fines de prueba, pero debe volver a habilitarse
+        //en un futuro no muy lejano (?)
+        if ($model->load(Yii::$app->request->post())) //&& $model->save()) 
+            {
+            //de ser correcta la validacion por post, se redirige a la lista de recetas y no a la
+            //de puntuaciones, ya que el llamado proviene de la primera
+            return $this->redirect(['recetastbl/index']);
         } else {
+            //se envian a la vista los elementos provenientes del controlador
             return $this->render('create', [
                         'model' => $model,
+                        'model2' => $model2,
+                        'usuarios' => $usuarios,
+                        'recetas' => $recetas
             ]);
         }
     }
@@ -78,12 +96,18 @@ class PuntuaciontblController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
+        $model2 = $this->findModel($id);
+        $usuarios = ArrayHelper::map(\app\models\Usuariostbl::find()->all(), 'id', 'username');
+        $recetas = ArrayHelper::map(\app\models\Recetastbl::find()->all(), 'id', 'receta');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                         'model' => $model,
+                        'model2' => $model2,
+                        'usuarios' => $usuarios,
+                        'recetas' => $recetas
             ]);
         }
     }
