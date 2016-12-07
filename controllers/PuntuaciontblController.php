@@ -72,8 +72,7 @@ class PuntuaciontblController extends Controller {
 
         //se deshabilito el guardado en la bd con fines de prueba, pero debe volver a habilitarse
         //en un futuro no muy lejano (?)
-        if ($model->load(Yii::$app->request->post())) //&& $model->save()) 
-            {
+        if ($model->load(Yii::$app->request->post())) { //&& $model->save()) 
             //de ser correcta la validacion por post, se redirige a la lista de recetas y no a la
             //de puntuaciones, ya que el llamado proviene de la primera
             return $this->redirect(['recetastbl/index']);
@@ -133,10 +132,8 @@ class PuntuaciontblController extends Controller {
         $cocineros = \app\models\Usuariostbl::find()->all();
         $puntuaciones = Puntuaciontbl::find()->all();
         $index = 0;
-        foreach ($cocineros as $cocinero) {
-            $index;
-            $acumulado = 0;
-            $myArray[$index][1] = $cocinero;
+        foreach ($cocineros as $cocinero) { 
+            $acumulado = 0; 
             foreach ($puntuaciones as $puntuacion) {
 
                 if ($puntuacion->recetastbl->usuariostbl->id == $cocinero->id) {
@@ -144,56 +141,44 @@ class PuntuaciontblController extends Controller {
                     $acumulado += $puntuacion->valoracion;
                 }
             }
-            $myArray[$index][2] = $acumulado;
-            
+            $acumuladoArray[$index] = $acumulado; 
+
             $index++;
-        } 
-        $cont = 0;
-        $cont1 = 0;
-        $ultimoMayor = -2;
-        $primeraVuelta = true;
+        }
 
-        $indexArray = 0;
-        //Calcula y guarda en orden de mayor a menor estrellas acumuladas
-        while ($cont1 < $index) {
-            $mayor = -1;
-            while ($cont < $index) {
-                if (($myArray[$cont][2] > $mayor && $ultimoMayor > $myArray[$cont][2]) || ($primeraVuelta && $myArray[$cont][2] > $mayor)) {
-                    $mayor = $myArray[$cont][2];
-                    $mayorAr[0] = $myArray[$cont][1];
-                    $mayorAr[1] = $myArray[$cont][2];
-                } else {
-                    if ($ultimoMayor == 0 && $myArray[$cont][2] == 0) {
-                        $mayor = $myArray[$cont][2];
-                        $mayorAr[0] = $myArray[$cont][1];
-                        $mayorAr[1] = $myArray[$cont][2];
+        rsort($acumuladoArray);
+
+        $index2 = 0;
+        while ($index2 < count($acumuladoArray)) {
+
+            foreach ($cocineros as $cocinero) { 
+                $acumulado = 0; 
+                foreach ($puntuaciones as $puntuacion) {
+
+                    if ($puntuacion->recetastbl->usuariostbl->id == $cocinero->id) {
+
+                        $acumulado += $puntuacion->valoracion;
                     }
+                } 
+                
+                if ($acumuladoArray[$index2] == $acumulado) {
+                    $cocinerosArray[$index2] = $cocinero;
+                    $index2++;
                 }
-                if ($cont == $index - 1) {
-
-                    //almacena los datos a ser enviados en el orden mayor a menor
-                    $cocinerosArray[$indexArray] = $mayorAr[0];
-                    $cantidadesArray[$indexArray] = $mayorAr[1];
-                    $indexArray++;
-                    
-                    $ultimoMayor = $mayorAr[1];
+                
+                if ($index2 == count($acumuladoArray)) {
+                    break;
                 }
 
-                $cont++;
+                $index++;
             }
-            $primeraVuelta = false;
-            $cont = 0;
-            $cont1++;
-        } 
+        }
 
         return $this->render('masestrellas', [
-                'cocinerosArray' => $cocinerosArray,
-                'cantidadesArray' => $cantidadesArray
-            ]);
+                    'cocinerosArray' => $cocinerosArray,
+                    'acumuladoArray' => $acumuladoArray
+        ]);
     }
-    
-    
-    
 
     /**
      * Finds the Puntuaciontbl model based on its primary key value.
