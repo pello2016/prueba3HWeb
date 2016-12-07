@@ -35,7 +35,7 @@ use yii\widgets\ActiveForm;
     <div class="form-group" >
         <div class="row">
             <div class="col-md-10">             
-                <input type="button" value="Agregar ingredientes" class="btn btn-default" onclick="addIngredientes();"/>
+                <input type="button" value="Agregar Ingredientes" class="btn btn-default" onclick="addIngredientes();"/>
                 <input type="number" id="cantIngredientes" name="cantIngredientes" value="">
             </div>
         </div>
@@ -85,7 +85,7 @@ use yii\widgets\ActiveForm;
 
     <div class="form-group">
         <div class="row">
-<?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+<?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Guardar Cambios', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
         </div>
     </div>
 
