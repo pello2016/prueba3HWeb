@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Puntuaciontbl */
+/* @var $model2 app\models\Recetastbl */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -17,17 +18,16 @@ use yii\widgets\ActiveForm;
         3=>'3 Estrellas',4=>'4 Estrellas',5=>'5 Estrellas')); ?>
 
     <!-- aqui se recibe el arreglo usuarios con los elementos de la tabla de usuarios en un dropdown -->
-    <?= $form->field($model, 'usuariostbl_id')->dropDownList($usuarios, ['prompt'=>'-Elija un Usuario-'],
-            //aqui se intenta seleccionar por defecto la receta de la cual proviene mediante un id, pero
-            //aun no esta funcional. esto, debido a que no se estan utilizando sesiones
-            ['options' =>
-                    [                        
-                      $model2->id => ['Selected' => 'selected']
-                    ]
-            ]) ?>
+    <?= $form->field($model, 'usuariostbl_id')->dropDownList($usuarios, ['prompt'=>'-Elija un Usuario-']) ?>
 
     <!-- aqui se recibe el arreglo recetas con los elementos de la tabla de recetas en un dropdown -->
-    <?= $form->field($model, 'recetastbl_id')->dropDownList($recetas, ['prompt'=>'-Elija una Receta-']) ?>
+    <?= $form->field($model, 'recetastbl_id')->dropDownList($recetas, 
+            //aqui se intenta seleccionar por defecto la receta de la cual proviene mediante un id
+            ['options' =>
+                    [                        
+                      $model2->id => ['Selected' => true]
+                    ]
+            ]) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Valorar' : 'Modificar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
