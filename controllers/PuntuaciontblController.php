@@ -10,6 +10,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use yii\bootstrap\Alert;
 
 /**
  * PuntuaciontblController implements the CRUD actions for Puntuaciontbl model.
@@ -70,9 +71,8 @@ class PuntuaciontblController extends Controller {
         $usuarios = ArrayHelper::map(\app\models\Usuariostbl::find()->all(), 'id', 'username');
         $recetas = ArrayHelper::map(\app\models\Recetastbl::find()->all(), 'id', 'receta');
 
-        //se deshabilito el guardado en la bd con fines de prueba, pero debe volver a habilitarse
-        //en un futuro no muy lejano (?)
-        if ($model->load(Yii::$app->request->post())) { //&& $model->save()) 
+        //el save se traslada luego de la validacion de si ya se valoro con un usuario o no
+        if ($model->load(Yii::$app->request->post())) {
             
             $puntuaciones = Puntuaciontbl::find()->all();
             $valorado = false;
@@ -88,11 +88,8 @@ class PuntuaciontblController extends Controller {
             }
             
             if($valorado == true){
-                //return \yii\bootstrap\Alert::widget([ 'options' => [ 'class' => 'alert-info', ], 'body' => 'Ya se ha valorado anteriormente con este usuario', ]);
-                echo '<div class="alert alert-warning alert-dismissible" role="alert">';
-                echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-                echo '<strong>Warning!</strong> Better check yourself, you´re not looking too good.';
-                echo '</div>';
+                //al final no se pudo solucionar el problema de renderizacion de las alertas, pero por lo menos la muestra
+                echo Alert::widget([ 'options' => [ 'class' => 'alert-info', ], 'body' => 'Ya se ha valorado anteriormente con este usuario', ]);
             }
             else{
                 //de ser correcta la validacion por post, se redirige a la lista de recetas y no a la
