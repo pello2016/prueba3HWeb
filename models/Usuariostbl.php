@@ -40,7 +40,7 @@ class Usuariostbl extends \yii\db\ActiveRecord implements \yii\web\IdentityInter
             [['rolestbl_id'], 'integer'],
             [['username', 'nombre', 'apellido', 'email'], 'string', 'max' => 45],
             [['password'], 'string', 'max' => 70],
-            [['authKey'], 'string', 'max' => 50],
+            [['authKey'], 'string', 'max' => 100],
             [['rolestbl_id'], 'exist', 'skipOnError' => true, 'targetClass' => Rolestbl::className(), 'targetAttribute' => ['rolestbl_id' => 'id']],
         ];
     }
@@ -99,15 +99,16 @@ class Usuariostbl extends \yii\db\ActiveRecord implements \yii\web\IdentityInter
     }
 
     public static function findIdentity($id) {
-        return self::findOne($id);
+        return static::findOne($id);
     }
 
     public static function findIdentityByAccessToken($token, $type = null) {
-        throw new \yii\base\NotSupportedException();
+        //throw new \yii\base\NotSupportedException();
+        return static::findOne(['authKey' => $token]);
     }
 
     public static function findByUsername($username) {
-        return self::findOne(['username'=>$username]);
+        return static::findOne(['username'=>$username]);
     }
     
     public function validatePassword($password) {
@@ -116,12 +117,23 @@ class Usuariostbl extends \yii\db\ActiveRecord implements \yii\web\IdentityInter
         if ($user!=null) {
             //busca al usuario en la bd, y si no es null, obtiene el hash y lo compara
             $hash = $user->password;
-            if(Yii::$app->getSecurity()->validatePassword($password, $hash)) {
+            if (Yii::$app->getSecurity()->validatePassword($password, $hash)) {
                 //de ser iguales, puede iniciar sesion
                 return true;
             }
         }
         //caso contrario, retorna falso y se mantiene en la vista de login
+        return false;
+    }
+    
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->authKey = \Yii::$app->security->generateRandomString();
+            }
+            return true;
+        }
         return false;
     }
     
