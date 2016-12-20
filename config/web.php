@@ -8,6 +8,11 @@ $config = [
     'bootstrap' => ['log','languagepicker'],
     'language' => 'es',
     'components' => [
+        //inicio linea añadida para trabajar con roles en el proyecto
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ],
+        //fin linea añadida para trabajar con roles en el proyecto
         'languagepicker' => [
         'class' => 'lajax\languagepicker\Component',        // List of available languages (icons and text)
         'languages' => ['es' => 'Español', 'en' => 'English']

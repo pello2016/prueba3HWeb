@@ -1,4 +1,5 @@
 <?php
+//Solo se modifico el "update" faltan los demas
 
 namespace app\controllers;
 
@@ -99,11 +100,30 @@ class UsuariostblController extends Controller
         //en modificar se aplica el mismo principio de crear
         $model = $this->findModel($id);
         $items = ArrayHelper::map(\app\models\Rolestbl::find()->all(), 'id', 'rol');
+        
+        //rol anterior
+        $rolAnterior = $model->rolestbl_id;
 
         if ($model->load(Yii::$app->request->post())) {
             $hash = Yii::$app->getSecurity()->generatePasswordHash($model->password);
             $model->password = $hash;
             $model->save();
+            
+	    //inicio codigo
+            //Codigo para actualizar rol en las tablas de Yii2
+            $auth = Yii::$app->authManager;
+            
+            $rolAnt = \app\models\Rolestbl::findOne($rolAnterior);
+            $rolAntYii = $auth->getRole($rolAnt->rol);
+            $auth->revoke($rolAntYii,$model->id); //quita el rol asignado al usuario q se estaactualizando
+            //Si se desea quitar todos los roles que tenga asignados previamente se usa:
+            //$auth->revokeAll($model->id);
+            
+            $rolNuevo = \app\models\Rolestbl::findOne($model->rolestbl_id);
+            $rolNuevoYii = $auth->getRole($rolNuevo->rol);
+            $auth->assign($rolNuevoYii, $model->id);
+            //fin codigo
+            
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [

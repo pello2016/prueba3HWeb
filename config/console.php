@@ -4,6 +4,7 @@ $params = require(__DIR__ . '/params.php');
 $db = require(__DIR__ . '/db.php');
 
 $config = [
+    
     'id' => 'basic-console',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
@@ -12,6 +13,11 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        //inicio codigo usado para trabajar con roles en el proyecto
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ],
+        //fin codigo usado para trabajar con roles en el proyecto
         'log' => [
             'targets' => [
                 [
