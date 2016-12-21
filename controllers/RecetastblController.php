@@ -167,7 +167,13 @@ class RecetastblController extends Controller {
     public function actionDelete($id) {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        $searchModel = new RecetastblSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**

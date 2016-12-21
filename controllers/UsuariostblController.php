@@ -143,7 +143,13 @@ class UsuariostblController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        $searchModel = new UsuariostblSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**
