@@ -102,8 +102,16 @@ class ProductostblController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        
+        //nuevo
+        $searchModel = new ProductostblSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+        //return $this->redirect(['index']);
     }
 
     /**

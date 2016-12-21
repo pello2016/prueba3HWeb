@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ProductostblSearch */
@@ -18,6 +19,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Agregar Nuevo Producto', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+    <?php 
+    //Esto se usa para indicar que se usara Pjax (AJAX)
+    Pjax::begin(); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -31,7 +35,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
-    
+    <?php
+    //Esto se usa para indicar el fin del uso de Pjax (AJAX)
+    Pjax::end(); ?>
     <div>
         <a class="btn btn-default" href="../web/index.php">Volver al Inicio &raquo;</a>
     </div>
