@@ -16,7 +16,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'authKey')->hiddenInput(['maxlength' => true]) ?>
+    <?php //$form->field($model, 'authKey')->hiddenInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
 
