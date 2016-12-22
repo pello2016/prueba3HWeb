@@ -58,6 +58,13 @@ class SiteController extends Controller {
      * @return string
      */
     public function actionIndex() {
+        //verifica si el usuario se a logeado o no
+        if (Yii::$app->user->isGuest) {
+            //Si no ha iniciado sesion, se redirige al login
+            return $this->redirect(\Yii::$app->urlManager->createUrl("site/login"));
+        }
+        
+        //si esta logeado muestra el "index" principal del sitio
         return $this->render('index');
     }
     
