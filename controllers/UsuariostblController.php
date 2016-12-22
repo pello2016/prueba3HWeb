@@ -77,6 +77,14 @@ class UsuariostblController extends Controller
             $model->password = $hash;
             //finalmente, se guarda en la bd y se redirige a la vista de detalles
             $model->save();
+            
+            //ahora se debe asignar el rol yii al usuario recien creado.
+            $auth = Yii::$app->authManager;
+            $rolNuevo = \app\models\Rolestbl::findOne($model->rolestbl_id);
+            $rolNuevoYii = $auth->getRole($rolNuevo->rol);
+            $auth->assign($rolNuevoYii, $model->id);
+            //se completa la asignacion de rol al usuario nuevo.
+            
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             //si no, la llamada es mediante get, por lo que debe renderizar la vista

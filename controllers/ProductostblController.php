@@ -8,6 +8,7 @@ use app\models\ProductostblSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * ProductostblController implements the CRUD actions for Productostbl model.
@@ -20,6 +21,21 @@ class ProductostblController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['create','update','delete','view','index'],
+                        'roles' => ['administrador'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['view','index'],
+                        'roles' => ['usuario'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

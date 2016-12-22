@@ -19,12 +19,16 @@ class SiteController extends Controller {
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
+                'only' => ['index'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
                         'allow' => true,
-                        'roles' => ['@'],
+                        'actions' => ['index','logout','contact','about'],
+                        'roles' => ['administrador','usuario'],
+                    ], 
+                    [
+                        'actions' => ['login'],
+                        'allow' => true, 
                     ],
                 ],
             ],
@@ -59,10 +63,10 @@ class SiteController extends Controller {
      */
     public function actionIndex() {
         //verifica si el usuario se a logeado o no
-        if (Yii::$app->user->isGuest) {
+        //if (Yii::$app->user->isGuest) {
             //Si no ha iniciado sesion, se redirige al login
-            return $this->redirect(\Yii::$app->urlManager->createUrl("site/login"));
-        }
+            //return $this->redirect(\Yii::$app->urlManager->createUrl("site/login"));
+        //}
         
         //si esta logeado muestra el "index" principal del sitio
         return $this->render('index');
@@ -94,7 +98,7 @@ class SiteController extends Controller {
      */
     //FIN ***** NUEVO *****
 
-    
+   
     /**
      * Login action.
      *
