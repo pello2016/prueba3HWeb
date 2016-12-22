@@ -111,10 +111,17 @@ class RecetastblController extends Controller {
         $items = ArrayHelper::map(\app\models\Usuariostbl::find()->all(), 'id', 'username');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //Se reciben los 3 arreglos enviados atraves de post
-            $ingredientes = Yii::$app->request->post('ingrediente');
-            $cantidades = Yii::$app->request->post('cantidad');
-            $unidades = Yii::$app->request->post('unidad');
+
+            $cantidadIngredientes = 0;
+            //verifica que no vengan vacios
+            if (Yii::$app->request->post('cantidad') && Yii::$app->request->post('unidad')) {
+                //Se reciben los 3 arreglos enviados atraves de post
+                $ingredientes = Yii::$app->request->post('ingrediente');
+                $cantidades = Yii::$app->request->post('cantidad');
+                $unidades = Yii::$app->request->post('unidad');
+                $cantidadIngredientes = count($cantidades);
+            } 
+
 
             //se deben buscar en la BD todos los ingredientes asociados a esta receta
             $ingredientesEnBD = \app\models\Recetasproducto::find()->where(['recetastbl_id' => $id])->all();
@@ -122,16 +129,22 @@ class RecetastblController extends Controller {
 
             //Se recorren los ingredientes que habia en la BD
             foreach ($ingredientesEnBD as $ingrediente) {
-                //se reemplazan sus valores por los contenidos en los arreglos correspondientes.
-                $ingrediente->productostbl_id = $ingredientes[$index + 1];
-                $ingrediente->cantidad = $cantidades[$index];
-                $ingrediente->unidad = $unidades[$index];
-                $ingrediente->save(); //se guardan los nuevos datos en la BD
+                if ($index < $cantidadIngredientes) {
+                    //se reemplazan sus valores por los contenidos en los arreglos correspondientes.
+                    $ingrediente->productostbl_id = $ingredientes[$index + 1];
+                    $ingrediente->cantidad = $cantidades[$index];
+                    $ingrediente->unidad = $unidades[$index];
+                    $ingrediente->save(); //se guardan los nuevos datos en la BD
+                } else {
+                    //la receta tiene menos ingredientes que antes, lo restantes se eliminaran.
+                    $ingrediente->delete();
+                }
+
                 $index++;
             }
 
             //En caso que hayan nuevos ingredientes, este for los genera y guarda en la BD
-            for ($index; $index < count($cantidades); $index++) {
+            for ($index; $index < $cantidadIngredientes; $index++) {
                 //para la lista de ingredientes es index+1
                 //se crea una nueva variable que guardara el nuevo ingrediente
                 $ingredienteModel = new \app\models\Recetasproducto();
@@ -242,7 +255,7 @@ class RecetastblController extends Controller {
         $puntuaciones = \app\models\Puntuaciontbl::find()->all();
         $recetas = Recetastbl::find()->all();
         $index = 0;
-        
+
         //recorre recetas y para cada receta, recorre las puntuaciones.
         foreach ($recetas as $receta) {
             $cuentaRecetas = 0;
@@ -305,7 +318,7 @@ class RecetastblController extends Controller {
                 }
             }
         }
-        
+
 
         return $this->render('mpromestrellas', [
                     'recetasArray' => $recetasArray,
