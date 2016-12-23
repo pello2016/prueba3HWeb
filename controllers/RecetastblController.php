@@ -39,6 +39,27 @@ class RecetastblController extends Controller {
             ],
         ];
     }
+    
+    /**
+     * Funcion recibe id de la receta, y la id del usuario conectado.
+     * Verifica si es el dueño y retorna true o false, segun corresponda
+     * 
+     * @param type $idReceta
+     * @param type $idConectado
+     * @return boolean
+     */
+    public function isOwner($idReceta,$idConectado){
+        
+       //se busca el modelo de la receta
+        $receta = $this->findModel($idReceta);
+        //se verifica si el usuario conectado es el dueño de la receta o no.
+        if($receta->usuariostbl_id == $idConectado){
+            return true;
+        }else
+        {
+           return false; 
+        } 
+    }
 
     /**
      * Lists all Recetastbl models.
@@ -110,6 +131,7 @@ class RecetastblController extends Controller {
             ]);
         }
     }
+    
 
     /**
      * Updates an existing Recetastbl model.

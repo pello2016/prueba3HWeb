@@ -19,42 +19,55 @@ $this->params['breadcrumbs'][] = $this->title;
          Estos mensajes son cargados desde el controlador -->
     <?php
     foreach (\Yii::$app->getSession()->getAllFlashes() as $key => $message) {
-        echo Alert::widget([ 'options' => [ 'class' => 'alert-'.$key, ], 'body' => $message, ]);
+        echo Alert::widget([ 'options' => [ 'class' => 'alert-' . $key,], 'body' => $message,]);
     }
     ?>
-    
+
     <!-- La opcion de busqueda se ha quitado, ya que no se evalua en esta prueba.-->
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <?= Html::a('Crear Nueva Receta', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-    <?php 
-    
+    <?php
     //Esto se usa para indicar que se usara Pjax (AJAX)
-    Pjax::begin(); ?>
-    
-    <?= GridView::widget([
+    Pjax::begin();
+    ?>
+
+    <?=
+    GridView::widget([
         'dataProvider' => $dataProvider,
 //        'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             // 'id',
             'receta',
             'descripcion',
             // 'preparacion',
             'usuariostbl.nombre',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+                //esto permite implementar condiciones de visibilidad a los botones "view","update" y "delete"
+                //para lo cual usa una funcion dentro de "RecetastblController"
+                'visibleButtons' => [
+                    'view' => true,
+                    'update' => function ($model, $url, $key) { 
+                        $recetaId = $model->id;
+                        return $this->context->isOwner($recetaId, Yii::$app->user->identity->id);
+                    },
+                    'delete' => function ($model, $url, $key) {
+                        $recetaId = $model->id;
+                        return $this->context->isOwner($recetaId, \Yii::$app->user->identity->id);
+                    },
+                ]],
         ],
-    ]); ?>
-    
+    ]);
+    ?>
+
     <?php
     //Esto se usa para indicar el fin del uso de Pjax (AJAX)
-    Pjax::end(); 
+    Pjax::end();
     ?>
-    
+
     <div>
         <a class="btn btn-default" href="../web/index.php">Volver al Inicio &raquo;</a>
     </div>
