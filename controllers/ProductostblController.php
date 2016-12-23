@@ -82,6 +82,14 @@ class ProductostblController extends Controller
         $model = new Productostbl();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            
+            //falta verificar si es administrador o no. Salvo que lo haga automaticamante la autentificion de yii
+            //mensaje propuesto si no es admin.
+            //Yii::$app->getSession()->setFlash('danger', 'ERROR: Solo un administrador puede añadir productos.'); 
+            
+            //mensaje de exito, que sera visualizado en el index de Productostbl
+            Yii::$app->getSession()->setFlash('success', 'Producto creado con exito.');
+            
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -101,6 +109,10 @@ class ProductostblController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            
+            //mensaje de exito, que sera visualizado en el index de Productostbl
+            Yii::$app->getSession()->setFlash('success', 'Producto actualizado con exito.');
+            
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -122,6 +134,9 @@ class ProductostblController extends Controller
         //nuevo
         $searchModel = new ProductostblSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        //mensaje de exito, que sera visualizado en el index de Productostbl
+        Yii::$app->getSession()->setFlash('success', 'Producto eliminado con exito.');
         
         return $this->render('index', [
             'searchModel' => $searchModel,

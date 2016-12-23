@@ -26,9 +26,9 @@ class RecetastblController extends Controller {
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['create','update','delete','view','index','masrecetas','mpromestrellas'],
-                        'roles' => ['administrador','usuario'],
-                    ], 
+                        'actions' => ['create', 'update', 'delete', 'view', 'index', 'masrecetas', 'mpromestrellas'],
+                        'roles' => ['administrador', 'usuario'],
+                    ],
                 ],
             ],
             'verbs' => [
@@ -39,7 +39,7 @@ class RecetastblController extends Controller {
             ],
         ];
     }
-    
+
     /**
      * Funcion recibe id de la receta, y la id del usuario conectado.
      * Verifica si es el dueño y retorna true o false, segun corresponda
@@ -48,17 +48,16 @@ class RecetastblController extends Controller {
      * @param type $idConectado
      * @return boolean
      */
-    public function isOwner($idReceta,$idConectado){
-        
-       //se busca el modelo de la receta
+    public function isOwner($idReceta, $idConectado) {
+
+        //se busca el modelo de la receta
         $receta = $this->findModel($idReceta);
         //se verifica si el usuario conectado es el dueño de la receta o no.
-        if($receta->usuariostbl_id == $idConectado){
+        if ($receta->usuariostbl_id == $idConectado) {
             return true;
-        }else
-        {
-           return false; 
-        } 
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -97,32 +96,41 @@ class RecetastblController extends Controller {
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
 
-            //Se reciben los 3 arreglos enviados atraves de post
-            $ingredientes = Yii::$app->request->post('ingrediente');
-            $cantidades = Yii::$app->request->post('cantidad');
-            $unidades = Yii::$app->request->post('unidad');
+            //Importante, verificar primero si la receta tienen ingredientes o no.
+            if (Yii::$app->request->post('cantidad') && Yii::$app->request->post('unidad') ) 
+                {
+                //la receta recibida, tiene ingredientes.
+                
+                //Se reciben los 3 arreglos enviados atraves de post
+                $ingredientes = Yii::$app->request->post('ingrediente');
+                $cantidades = Yii::$app->request->post('cantidad');
+                $unidades = Yii::$app->request->post('unidad');
 
-            //Al momento de hacer $model->save, el model contendra la ID AutoIncrementable asignada por la BD
-            $index = 0; //contador usado para recorrer ciertos elementos de los arreglos
-            //se corren todos los elementos correspondientes a los ingredientes
-            foreach ($cantidades as $cantidad) {
-                //para la lista de ingredientes inicia en 1 y no 0
-                //se crea una nueva variable que guardara el nuevo ingrediente
-                $ingredienteModel = new \app\models\Recetasproducto();
+                //Al momento de hacer $model->save, el model contendra la ID AutoIncrementable asignada por la BD
+                $index = 0; //contador usado para recorrer ciertos elementos de los arreglos
+                //se corren todos los elementos correspondientes a los ingredientes
+                foreach ($cantidades as $cantidad) {
+                    //para la lista de ingredientes inicia en 1 y no 0
+                    //se crea una nueva variable que guardara el nuevo ingrediente
+                    $ingredienteModel = new \app\models\Recetasproducto();
 
-                //se asocia a la receta usando la id
-                $ingredienteModel->recetastbl_id = $model->id;
-                //se asocia el producto (ingrediente) usando su id
-                $ingredienteModel->productostbl_id = $ingredientes[$index + 1];
-                //se agrega la cantidad
-                $ingredienteModel->cantidad = $cantidad;
-                //se agrega la unidad de medida
-                $ingredienteModel->unidad = $unidades[$index];
+                    //se asocia a la receta usando la id
+                    $ingredienteModel->recetastbl_id = $model->id;
+                    //se asocia el producto (ingrediente) usando su id
+                    $ingredienteModel->productostbl_id = $ingredientes[$index + 1];
+                    //se agrega la cantidad
+                    $ingredienteModel->cantidad = $cantidad;
+                    //se agrega la unidad de medida
+                    $ingredienteModel->unidad = $unidades[$index];
 
-                //se guarda el ingrediente en la BD
-                $ingredienteModel->save();
-                $index++;
+                    //se guarda el ingrediente en la BD
+                    $ingredienteModel->save();
+                    $index++;
+                }
             }
+            //Mensaje de exito, que se recupera en el index de Recetastbl o el view
+            Yii::$app->getSession()->setFlash('success', 'Receta creada con exito.');
+
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -131,7 +139,6 @@ class RecetastblController extends Controller {
             ]);
         }
     }
-    
 
     /**
      * Updates an existing Recetastbl model.
@@ -153,7 +160,7 @@ class RecetastblController extends Controller {
                 $cantidades = Yii::$app->request->post('cantidad');
                 $unidades = Yii::$app->request->post('unidad');
                 $cantidadIngredientes = count($cantidades);
-            } 
+            }
 
 
             //se deben buscar en la BD todos los ingredientes asociados a esta receta
@@ -194,6 +201,8 @@ class RecetastblController extends Controller {
                 //se guarda el ingrediente en la BD
                 $ingredienteModel->save();
             }
+            //Mensaje de exito, que se recupera en el index de Recetastbl o el view
+            Yii::$app->getSession()->setFlash('success', 'Receta actualizada con exito.');
 
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -215,6 +224,9 @@ class RecetastblController extends Controller {
 
         $searchModel = new RecetastblSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        //Mensaje de exito, que se recupera en el index de Recetastbl o el view
+        Yii::$app->getSession()->setFlash('success', 'Receta eliminada con exito.');
 
         return $this->render('index', [
                     'searchModel' => $searchModel,
