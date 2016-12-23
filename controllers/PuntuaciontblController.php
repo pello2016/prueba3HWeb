@@ -87,14 +87,17 @@ class PuntuaciontblController extends Controller {
                 }
             }
             
-            if($valorado == true){
-                //al final no se pudo solucionar el problema de renderizacion de las alertas, pero por lo menos la muestra
-                echo Alert::widget([ 'options' => [ 'class' => 'alert-info', ], 'body' => 'Ya se ha valorado anteriormente con este usuario', ]);
+            if($valorado == true){ 
+                //el usuario que intenta valorar, ya habia valorado la receta.
+                //se procede a registrar un mensaje, que sera mostrado en la vista "index" de este contralador
+                Yii::$app->getSession()->setFlash('danger', 'ERROR: Solo puede valorar una vez cada receta.'); 
+                return $this->redirect(['recetastbl/index']);
             }
             else{
                 //de ser correcta la validacion por post, se redirige a la lista de recetas y no a la
                 //de puntuaciones, ya que el llamado proviene de la primera
                 $model->save();
+                Yii::$app->getSession()->setFlash('success', 'Receta valorada con exito.');
                 return $this->redirect(['recetastbl/index']);
             }
         } else {

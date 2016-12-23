@@ -17,17 +17,33 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'valoracion')->radioList(array(1=>'1 Estrella',2=>'2 Estrellas',
         3=>'3 Estrellas',4=>'4 Estrellas',5=>'5 Estrellas')); ?>
 
-    <!-- aqui se recibe el arreglo usuarios con los elementos de la tabla de usuarios en un dropdown -->
-    <?= $form->field($model, 'usuariostbl_id')->dropDownList($usuarios, ['prompt'=>'-Elija un Usuario-']) ?>
+  
+    <div class="row">
+        <div class="col-md-2">
+            <label class="control-label">Usuario que Valora:</label>
+        </div>
+        <div class="col-md-4">
+            <label><font color="blue"><?=Yii::$app->user->identity->username ?></font></label>
+            
+        </div>
+    </div> 
+    <!--Este campo oculto tiene el id del usuario conectado, que esta valorando la receta-->
+    <?= $form->field($model,'usuariostbl_id')->hiddenInput(['value'=> Yii::$app->user->identity->id])->label(false)?>
 
-    <!-- aqui se recibe el arreglo recetas con los elementos de la tabla de recetas en un dropdown -->
-    <?= $form->field($model, 'recetastbl_id')->dropDownList($recetas, 
-            //aqui se intenta seleccionar por defecto la receta de la cual proviene mediante un id
-            ['options' =>
-                    [                        
-                      $model2->id => ['Selected' => true]
-                    ]
-            ]) ?>
+    <div class="row">
+        <div class="col-md-2">
+            <label class="control-label">Receta que Valora:</label>
+        </div>
+        <div class="col-md-4">
+            
+            <label><font color="blue"><?=$model2->receta?></font></label>
+            
+        </div>
+    </div> 
+    
+    <!--Este campo oculto tiene el id de la receta que se esta valorando-->
+    <?= $form->field($model,'recetastbl_id')->hiddenInput(['value'=> $model2->id])->label(false)?>
+    
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Valorar' : 'Modificar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

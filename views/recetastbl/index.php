@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use yii\bootstrap\Alert;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\RecetastblSearch */
@@ -14,14 +15,25 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="recetastbl-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
+    <!-- Este codigo se encarga de recorrer (si existen) mensajes, que podrian mostrar: Errores,informacion,o mensaje de exito
+         Estos mensajes son cargados desde el controlador -->
+    <?php
+    foreach (\Yii::$app->getSession()->getAllFlashes() as $key => $message) {
+        echo Alert::widget([ 'options' => [ 'class' => 'alert-'.$key, ], 'body' => $message, ]);
+    }
+    ?>
+    
+    <!-- La opcion de busqueda se ha quitado, ya que no se evalua en esta prueba.-->
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <?= Html::a('Crear Nueva Receta', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?php 
+    
     //Esto se usa para indicar que se usara Pjax (AJAX)
     Pjax::begin(); ?>
+    
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
 //        'filterModel' => $searchModel,
@@ -37,9 +49,12 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
+    
     <?php
     //Esto se usa para indicar el fin del uso de Pjax (AJAX)
-    Pjax::end(); ?>
+    Pjax::end(); 
+    ?>
+    
     <div>
         <a class="btn btn-default" href="../web/index.php">Volver al Inicio &raquo;</a>
     </div>

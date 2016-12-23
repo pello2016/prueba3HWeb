@@ -13,6 +13,11 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="puntuaciontbl-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
+    <?php
+    foreach (\Yii::$app->getSession()->getAllFlashes() as $key => $message) {
+        echo '<div class="alert alert-' . $key . '">' . $message . '</div>';
+    }
+    ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
