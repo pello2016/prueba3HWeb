@@ -18,7 +18,29 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'preparacion')->textarea(['maxlength' => true]); ?>
 
-    <?= $form->field($model, 'usuariostbl_id')->dropDownList($items, ['prompt' => '-Elija un Usuario-']) ?>
+    <?php //$form->field($model, 'usuariostbl_id')->dropDownList($items, ['prompt' => '-Elija un Usuario-']) ?>
+    <?php 
+    if ($model->isNewRecord) { ?>
+        <!--si es un nuevo registro, se toma el username de quien esta conectado actualmente, y se muestra dentro
+            del form, el que a su vez contiene el id requerido por la bd en un campo oculto-->
+        <div class="row">
+            <div class="col-md-2">
+                <label class="control-label">Autor:</label>
+            </div>
+            <div class="col-md-4">
+                <label><font color="blue"><?= Yii::$app->user->identity->username ?></font></label>
+            </div>
+        </div>
+        <!--Este campo oculto tiene el id del usuario conectado, que esta creando la receta-->
+        <?= $form->field($model,'usuariostbl_id')->hiddenInput(['value'=> Yii::$app->user->identity->id])->label(false)?>
+    <?php }
+    else { ?>
+        <!--caso contrario, se mantiene el modo antiguo usando dropdown, en el que se selecciona de forma auto
+            matica el usuario que creo la receta, al momento de modificarla. solo es momentaneo, puesto que
+            quien edita su receta, es el autor respectivo de la misma-->
+        <?= $form->field($model, 'usuariostbl_id')->dropDownList($items, ['prompt' => '-Elija un Usuario-']) ?>
+    <?php }
+    ?>
 
     <div hidden>
         <div class="form-group" id="lista">

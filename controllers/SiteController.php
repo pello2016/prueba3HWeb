@@ -6,8 +6,10 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\Usuariostbl;
 use app\models\Rolestbl;
 
 class SiteController extends Controller {
@@ -27,7 +29,7 @@ class SiteController extends Controller {
                         'roles' => ['administrador','usuario'],
                     ], 
                     [
-                        'actions' => ['login'],
+                        'actions' => ['login','register'],
                         'allow' => true, 
                     ],
                 ],
@@ -62,7 +64,7 @@ class SiteController extends Controller {
      * @return string
      */
     public function actionIndex() {
-        //verifica si el usuario se a logeado o no
+        //verifica si el usuario se ha logeado o no
         //if (Yii::$app->user->isGuest) {
             //Si no ha iniciado sesion, se redirige al login
             //return $this->redirect(\Yii::$app->urlManager->createUrl("site/login"));
@@ -127,6 +129,45 @@ class SiteController extends Controller {
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+    
+    /**
+     * Register a new Usuariostbl model.
+     * If creation is successful, the browser will be redirected to the 'login' page.
+     * @return mixed
+     */
+    public function actionRegister()
+    {
+        $model = new Usuariostbl();
+        //se crea una variable items, en la que se guardaran los roles de la tabla
+        $items = ArrayHelper::map(\app\models\Rolestbl::find()->all(), 'id', 'rol');
+
+        if ($model->load(Yii::$app->request->post())) {
+            //si la vista se carga mediante post (el usuario presiono el boton submit)
+            //se creara una variable hash en la que se generara una clave encriptada
+            $hash = Yii::$app->getSecurity()->generatePasswordHash($model->password);
+            //luego, se le dice a la clave del modelo que sea igual a la clave encriptada
+            $model->password = $hash;
+            //finalmente, se guarda en la bd y se redirige a la vista de detalles
+            $model->save();
+            
+            //ahora se debe asignar el rol yii al usuario recien creado.
+            $auth = Yii::$app->authManager;
+            $rolNuevo = \app\models\Rolestbl::findOne($model->rolestbl_id);
+            $rolNuevoYii = $auth->getRole($rolNuevo->rol);
+            $auth->assign($rolNuevoYii, $model->id);
+            //se completa la asignacion de rol al usuario nuevo.
+            
+            return $this->redirect(['login']);
+        } else {
+            //si no, la llamada es mediante get, por lo que debe renderizar la vista
+            //con todos los elementos correspondientes al modelo, y adicionalmente
+            //el arreglo de items que creamos previamente
+            return $this->render('register', [
+                'model' => $model,
+                'items' => $items
+            ]);
+        }
     }
 
     /**

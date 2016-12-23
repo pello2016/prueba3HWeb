@@ -33,6 +33,23 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
+    $menuItems = [
+        ['label' => 'Inicio', 'url' => ['/site/index']],
+//        ['label' => 'Acerca de', 'url' => ['/site/about']],
+//        ['label' => 'Contacto', 'url' => ['/site/contact']],
+    ];
+    if (Yii::$app->user->isGuest) {
+        //agregado el boton de registrarse, cuando no existe un usuario logueado
+        $menuItems[] = ['label' => 'Registrarse', 'url' => ['/site/register']];
+        $menuItems[] = ['label' => 'Iniciar Sesión', 'url' => ['/site/login']];
+    }
+    else {
+        $menuItems[] = [
+            'label' => 'Cerrar Sesión (' . Yii::$app->user->identity->username . ')',
+            'url' => ['/site/logout'],
+            'linkOptions' => ['data-method' => 'post']
+        ];
+    }
     ?>
     <div class="navbar-text pull-right">
         <?=
@@ -45,24 +62,8 @@ AppAsset::register($this);
     <?php
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            ['label' => 'Inicio', 'url' => ['/site/index']],
-//            ['label' => 'Acerca de', 'url' => ['/site/about']],
-//            ['label' => 'Contacto', 'url' => ['/site/contact']],
-            Yii::$app->user->isGuest ? (
-                ['label' => 'Iniciar Sesión', 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    'Cerrar Sesión (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
-        ],
-    ]);
+        'items' => $menuItems,
+        ]);
     NavBar::end();
     ?>
 
