@@ -18,7 +18,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'preparacion')->textarea(['maxlength' => true]); ?>
 
-    <?php //$form->field($model, 'usuariostbl_id')->dropDownList($items, ['prompt' => '-Elija un Usuario-']) ?>
     <?php 
     if ($model->isNewRecord) { ?>
         <!--si es un nuevo registro, se toma el username de quien esta conectado actualmente, y se muestra dentro
@@ -31,14 +30,23 @@ use yii\widgets\ActiveForm;
                 <label><font color="blue"><?= Yii::$app->user->identity->username ?></font></label>
             </div>
         </div>
+        
         <!--Este campo oculto tiene el id del usuario conectado, que esta creando la receta-->
         <?= $form->field($model,'usuariostbl_id')->hiddenInput(['value'=> Yii::$app->user->identity->id])->label(false)?>
     <?php }
     else { ?>
-        <!--caso contrario, se mantiene el modo antiguo usando dropdown, en el que se selecciona de forma auto
-            matica el usuario que creo la receta, al momento de modificarla. solo es momentaneo, puesto que
-            quien edita su receta, es el autor respectivo de la misma-->
-        <?= $form->field($model, 'usuariostbl_id')->dropDownList($items, ['prompt' => '-Elija un Usuario-']) ?>
+        <!--caso contrario, se muestra el autor de una receta anteriormente creada, pero que no puede modificarse-->
+        <div class="row">
+            <div class="col-md-2">
+                <label class="control-label">Autor:</label>
+            </div>
+            <div class="col-md-4">
+                <label><font color="blue"><?= $model->usuariostbl->username ?></font></label>
+            </div>
+        </div>
+
+        <!--Este campo oculto tiene el id del usuario que creo la receta-->
+        <?= $form->field($model,'usuariostbl_id')->hiddenInput(['value'=> $model->usuariostbl_id])->label(false)?>
     <?php }
     ?>
 
@@ -53,7 +61,6 @@ use yii\widgets\ActiveForm;
         </div>
     </div>
 
-
     <div class="form-group" >
         <div class="row">
             <div class="col-md-10">             
@@ -61,7 +68,6 @@ use yii\widgets\ActiveForm;
                 <input type="number" id="cantIngredientes" name="cantIngredientes" value="">
             </div>
         </div>
-
     </div>
 
     <?php
