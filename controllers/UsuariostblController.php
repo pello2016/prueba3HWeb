@@ -113,9 +113,26 @@ class UsuariostblController extends Controller
         $rolAnterior = $model->rolestbl_id;
 
         if ($model->load(Yii::$app->request->post())) {
-            $hash = Yii::$app->getSecurity()->generatePasswordHash($model->password);
-            $model->password = $hash;
-            $model->save();
+            //solucionado el problema del re-hash de la password actual
+            //si no se modificaba, se volvia a hashear, lo que es malo (?)
+            //
+            //para solucionar esto, fue necesario preguntar a la bd por el
+            //hash del usuario el cual se esta modificando mediante el id
+            $user = Usuariostbl::findOne($id);
+            $hash = $user->password;
+            
+            if ($model->password != $hash){
+                //luego, si la pass del form es distinta a la de la bd, se procede
+                //a hashear la nueva pass, y se le dice al form que la password
+                //sera el hash de la misma
+                $hash = Yii::$app->getSecurity()->generatePasswordHash($model->password);
+                $model->password = $hash;
+            }
+            else{
+                //caso contrario, se mantiene la password hasheada actual y se guardan
+                //los cambios que pudieran haberse hecho
+                $model->save();
+            }
             
 	    //inicio codigo
             //Codigo para actualizar rol en las tablas de Yii2
@@ -123,7 +140,8 @@ class UsuariostblController extends Controller
             
             $rolAnt = \app\models\Rolestbl::findOne($rolAnterior);
             $rolAntYii = $auth->getRole($rolAnt->rol);
-            $auth->revoke($rolAntYii,$model->id); //quita el rol asignado al usuario q se estaactualizando
+            $auth->revoke($rolAntYii,$model->id);
+            ////quita el rol asignado al usuario que se esta actualizando
             //Si se desea quitar todos los roles que tenga asignados previamente se usa:
             //$auth->revokeAll($model->id);
             
