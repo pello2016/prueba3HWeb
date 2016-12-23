@@ -9,8 +9,8 @@ use app\models\Recetastbl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\helpers\ArrayHelper;
-use yii\bootstrap\Alert;
+use yii\helpers\ArrayHelper; 
+use yii\filters\AccessControl;
 
 /**
  * PuntuaciontblController implements the CRUD actions for Puntuaciontbl model.
@@ -22,6 +22,16 @@ class PuntuaciontblController extends Controller {
      */
     public function behaviors() {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['view','index','create','masestrellas'],
+                        'roles' => ['administrador','usuario'],
+                    ], 
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
