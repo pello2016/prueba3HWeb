@@ -29,7 +29,12 @@ class UsuariostblController extends Controller
                     [
                         'allow' => true,
                         'actions' => ['create','update','delete','view','index'],
-                        'roles' => ['administrador','usuario'],
+                        'roles' => ['administrador'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['view','index'],
+                        'roles' => ['usuario'],
                     ], 
                 ],
             ],
@@ -97,7 +102,8 @@ class UsuariostblController extends Controller
             //se completa la asignacion de rol al usuario nuevo.
             
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
+        }
+        else {
             //si no, la llamada es mediante get, por lo que debe renderizar la vista
             //con todos los elementos correspondientes al modelo, y adicionalmente
             //el arreglo de items que creamos previamente
@@ -139,11 +145,9 @@ class UsuariostblController extends Controller
                 $hash = Yii::$app->getSecurity()->generatePasswordHash($model->password);
                 $model->password = $hash;
             }
-            else{
-                //caso contrario, se mantiene la password hasheada actual y se guardan
-                //los cambios que pudieran haberse hecho
-                $model->save();
-            }
+            //caso contrario, se mantiene la password hasheada actual y se guardan
+            //los cambios que pudieran haberse hecho
+            $model->save();
             
 	    //inicio codigo
             //Codigo para actualizar rol en las tablas de Yii2
@@ -162,7 +166,8 @@ class UsuariostblController extends Controller
             //fin codigo
             
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
+        }
+        else {
             return $this->render('update', [
                 'model' => $model,
                 'items' => $items
@@ -201,7 +206,7 @@ class UsuariostblController extends Controller
         if (($model = Usuariostbl::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException('La página solicitada no existe.');
         }
     }
 }

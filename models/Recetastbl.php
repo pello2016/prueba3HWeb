@@ -53,6 +53,7 @@ class Recetastbl extends \yii\db\ActiveRecord
             'descripcion' => 'Descripción',
             'preparacion' => 'Preparación',
             'usuariostbl_id' => 'Autor',
+            'usuariostbl.nombre' => 'Autor'
         ];
     }
 

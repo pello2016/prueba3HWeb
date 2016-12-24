@@ -80,7 +80,7 @@ use yii\widgets\ActiveForm;
         $ingId = 0;
         foreach ($model2Array as $ingrediente) {
             $ingId++;
-            ?>
+        ?>
             <div class="form-group" id="ing<?= $ingId ?>">
                 <div class="form-group" id="lista">
                     <div class="row">
@@ -115,9 +115,7 @@ use yii\widgets\ActiveForm;
                 </div>
                 <hr>
             </div>
-            
-
-            <?php
+        <?php
         }
         ?> 
 

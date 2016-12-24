@@ -44,6 +44,8 @@ AppAsset::register($this);
         $menuItems[] = ['label' => 'Iniciar Sesión', 'url' => ['/site/login']];
     }
     else {
+        $menuItems[] = ['label' => 'Editar Mis Datos', 
+                        'url' => ['/site/editself', 'id' => Yii::$app->user->identity->id]];
         $menuItems[] = [
             'label' => 'Cerrar Sesión (' . Yii::$app->user->identity->username . ')',
             'url' => ['/site/logout'],

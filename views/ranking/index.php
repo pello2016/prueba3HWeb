@@ -26,4 +26,5 @@ $this->params['breadcrumbs'][] = $this->title;
     <div>
         <a class="btn btn-default" href="../web/index.php">Volver al Inicio &raquo;</a>
     </div>
+    
 </div>

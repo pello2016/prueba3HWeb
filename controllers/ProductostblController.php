@@ -81,14 +81,9 @@ class ProductostblController extends Controller
     {
         $model = new Productostbl();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            
-            //falta verificar si es administrador o no. Salvo que lo haga automaticamante la autentificion de yii
-            //mensaje propuesto si no es admin.
-            //Yii::$app->getSession()->setFlash('danger', 'ERROR: Solo un administrador puede añadir productos.'); 
-            
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {         
             //mensaje de exito, que sera visualizado en el index de Productostbl
-            Yii::$app->getSession()->setFlash('success', 'Producto creado con exito.');
+            Yii::$app->getSession()->setFlash('success', 'Producto creado con éxito.');
             
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -109,9 +104,8 @@ class ProductostblController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            
             //mensaje de exito, que sera visualizado en el index de Productostbl
-            Yii::$app->getSession()->setFlash('success', 'Producto actualizado con exito.');
+            Yii::$app->getSession()->setFlash('success', 'Producto actualizado con éxito.');
             
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -131,18 +125,16 @@ class ProductostblController extends Controller
     {
         $this->findModel($id)->delete();
         
-        //nuevo
         $searchModel = new ProductostblSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         
         //mensaje de exito, que sera visualizado en el index de Productostbl
-        Yii::$app->getSession()->setFlash('success', 'Producto eliminado con exito.');
+        Yii::$app->getSession()->setFlash('success', 'Producto eliminado con éxito.');
         
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
-        //return $this->redirect(['index']);
     }
 
     /**
@@ -157,7 +149,7 @@ class ProductostblController extends Controller
         if (($model = Productostbl::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException('La página solicitada no existe.');
         }
     }
 }

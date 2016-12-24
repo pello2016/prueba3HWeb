@@ -35,8 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
         //se rescata la id de la receta.
         $recetaId = $model->id;
         //Verifica si el visitante es dueño de la receta
-        if ($this->context->isOwner($recetaId, Yii::$app->user->identity->id)) 
-                {
+        if ($this->context->isOwner($recetaId, Yii::$app->user->identity->id)) {
             //si es dueño de la receta se muestran los botones "modificar" y "eliminar".
             ?>
             <?= Html::a('Modificar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -44,14 +43,15 @@ $this->params['breadcrumbs'][] = $this->title;
             Html::a('Eliminar', ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
-                    'confirm' => 'Are you sure you want to delete this item?',
+                    'confirm' => '¿Está seguro de que desea borrar esta Receta?',
                     'method' => 'post',
                 ],
             ])
             ?>
 
-            <?php
-        }//fin del if (es dueño?) 
+        <?php
+        }
+        //fin del if (es dueño?) 
         //si no es dueño, solo tendra la opcion de valorar.
         ?>
     </p>
@@ -70,33 +70,31 @@ $this->params['breadcrumbs'][] = $this->title;
         ?>
     <hr>
 
-
 <?php
-//Se llama al metodo que retorna todos los ingredientes para esta receta.
-$model2Array = $this->context->getIngredientes($model->id)
+    //Se llama al metodo que retorna todos los ingredientes para esta receta.
+    $model2Array = $this->context->getIngredientes($model->id)
 ?>
 
     <!--Inicio Tabla ingredientes -->
     <table id="w1" class="table table-striped table-bordered detail-view" >
         <tbody>
 <?php
-$contador = 0;
-//se recorren ingredientes recibido, y por cada campo que contiene se genera una fila para la tabla
-//que los contendra.
-foreach ($model2Array as $model2) {
-    $contador++;
-    ?>
-                <!--Inicio html -->
-                <tr ><th style="width:36%">Ingrediente <?= $contador ?></th><td><?= $model2->productostbl->producto ?></td></tr>
-                <tr ><th style="width:36%">Cantidad</th><td><?= $model2->cantidad ?></td></tr>
-                <tr ><th style="width:36%">Unidad</th><td><?= $model2->unidad ?></td></tr> 
-                <tr ><th style="width:36%"><hr></th><td><hr></td></tr> 
-                <!--Fin html -->
-    <?php
+    $contador = 0;
+    //se recorren ingredientes recibido, y por cada campo que contiene se genera una fila para la tabla
+    //que los contendra.
+    foreach ($model2Array as $model2) {
+        $contador++;
+?>
+            <!--Inicio html -->
+            <tr ><th style="width:36%">Ingrediente <?= $contador ?></th><td><?= $model2->productostbl->producto ?></td></tr>
+            <tr ><th style="width:36%">Cantidad</th><td><?= $model2->cantidad ?></td></tr>
+            <tr ><th style="width:36%">Unidad</th><td><?= $model2->unidad ?></td></tr> 
+            <tr ><th style="width:36%"><hr></th><td><hr></td></tr> 
+            <!--Fin html -->
+<?php
 }
 ?>
         </tbody>
     </table>
     <!--Fin Tabla ingredientes -->
-
 </div>

@@ -36,7 +36,6 @@ $this->params['breadcrumbs'][] = $this->title;
         echo Alert::widget([ 'options' => [ 'class' => 'alert-' . $key,], 'body' => $message,]);
     }
     ?>
-    
 
     <?=
     GridView::widget([
@@ -62,7 +61,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         $recetaId = $model->id;
                         return $this->context->isOwner($recetaId, \Yii::$app->user->identity->id);
                     },
-                ]],
+                ]
+            ],
         ],
     ]);
     ?>
@@ -75,4 +75,5 @@ $this->params['breadcrumbs'][] = $this->title;
     <div>
         <a class="btn btn-default" href="../web/index.php">Volver al Inicio &raquo;</a>
     </div>
+    
 </div>

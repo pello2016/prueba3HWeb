@@ -41,7 +41,7 @@ class Usuariostbl extends \yii\db\ActiveRecord implements \yii\web\IdentityInter
             [['username', 'nombre', 'apellido', 'email'], 'string', 'max' => 45],
             [['password'], 'string', 'max' => 70],
             [['authKey'], 'string', 'max' => 100],
-            [['rolestbl_id'], 'exist', 'skipOnError' => true, 'targetClass' => Rolestbl::className(), 'targetAttribute' => ['rolestbl_id' => 'id']],
+            [['rolestbl_id'], 'exist', 'skipOnError' => true, 'targetClass' => Rolestbl::className(), 'targetAttribute' => ['rolestbl_id' => 'id']],     
         ];
     }
 

@@ -21,12 +21,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php
         //verifica si el visitante es adminsitrador o no.
         if (Yii::$app->user->identity->rolestbl->rol == "administrador") {
-            
         ?>
         <!-- Esta opcion solo esta disponible para los adminstradores. -->
         <?= Html::a('Agregar Nuevo Producto', ['create'], ['class' => 'btn btn-success']) ?>
         <?php 
-        
         } 
         ?>
     </p>

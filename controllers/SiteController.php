@@ -25,7 +25,7 @@ class SiteController extends Controller {
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index','logout','contact','about'],
+                        'actions' => ['index','logout','contact','about','editSelf'],
                         'roles' => ['administrador','usuario'],
                     ], 
                     [
@@ -64,13 +64,6 @@ class SiteController extends Controller {
      * @return string
      */
     public function actionIndex() {
-        //verifica si el usuario se ha logeado o no
-        //if (Yii::$app->user->isGuest) {
-            //Si no ha iniciado sesion, se redirige al login
-            //return $this->redirect(\Yii::$app->urlManager->createUrl("site/login"));
-        //}
-        
-        //si esta logeado muestra el "index" principal del sitio
         return $this->render('index');
     }
     
@@ -100,7 +93,6 @@ class SiteController extends Controller {
      */
     //FIN ***** NUEVO *****
 
-   
     /**
      * Login action.
      *
@@ -112,11 +104,12 @@ class SiteController extends Controller {
         }
 
         $model = new LoginForm();
+        
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         }
         return $this->render('login', [
-                    'model' => $model,
+            'model' => $model,
         ]);
     }
 
@@ -159,7 +152,8 @@ class SiteController extends Controller {
             //se completa la asignacion de rol al usuario nuevo.
             
             return $this->redirect(['login']);
-        } else {
+        }
+        else {
             //si no, la llamada es mediante get, por lo que debe renderizar la vista
             //con todos los elementos correspondientes al modelo, y adicionalmente
             //el arreglo de items que creamos previamente
@@ -170,6 +164,73 @@ class SiteController extends Controller {
         }
     }
 
+    /**
+     * Updates the current user's data model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionEditself($id)
+    {
+        //en modificar se aplica el mismo principio de crear
+        $model = Usuariostbl::findOne($id);
+        $items = ArrayHelper::map(\app\models\Rolestbl::find()->all(), 'id', 'rol');
+        
+        //rol anterior
+        $rolAnterior = $model->rolestbl_id;
+
+        if ($model->load(Yii::$app->request->post())) {
+            $model->save();
+            
+	    //inicio codigo
+            //Codigo para actualizar rol en las tablas de Yii2
+            $auth = Yii::$app->authManager;
+            
+            $rolAnt = \app\models\Rolestbl::findOne($rolAnterior);
+            $rolAntYii = $auth->getRole($rolAnt->rol);
+            $auth->revoke($rolAntYii,$model->id);
+            ////quita el rol asignado al usuario que se esta actualizando
+            //Si se desea quitar todos los roles que tenga asignados previamente se usa:
+            //$auth->revokeAll($model->id);
+            
+            $rolNuevo = \app\models\Rolestbl::findOne($model->rolestbl_id);
+            $rolNuevoYii = $auth->getRole($rolNuevo->rol);
+            $auth->assign($rolNuevoYii, $model->id);
+            //fin codigo
+            
+            return $this->redirect(['usuariostbl/view', 'id' => $model->id]);
+        }
+        else {
+            return $this->render('editself', [
+                'model' => $model,
+                'items' => $items
+            ]);
+        }
+    }
+    
+    public function actionEditselfpass($id)
+    {
+        $model = Usuariostbl::findOne($id);
+
+        if ($model->load(Yii::$app->request->post())) {
+            $user = Usuariostbl::findOne($id);
+            $hash = $user->password;
+            
+            if ($model->password != $hash){
+                $hash = Yii::$app->getSecurity()->generatePasswordHash($model->password);
+                $model->password = $hash;
+            }
+            $model->save();
+
+            return $this->redirect(['editself', 'id' => $model->id]);
+        }
+        else {
+            return $this->render('editselfpass', [
+                'model' => $model,
+            ]);
+        }
+    }
+    
     /**
      * Displays contact page.
      *

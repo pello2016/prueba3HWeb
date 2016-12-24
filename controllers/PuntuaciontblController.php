@@ -62,7 +62,7 @@ class PuntuaciontblController extends Controller {
      */
     public function actionView($id) {
         return $this->render('view', [
-                    'model' => $this->findModel($id),
+            'model' => $this->findModel($id),
         ]);
     }
 
@@ -100,23 +100,23 @@ class PuntuaciontblController extends Controller {
             if($valorado == true){ 
                 //el usuario que intenta valorar, ya habia valorado la receta.
                 //se procede a registrar un mensaje, que sera mostrado en la vista "index" de este contralador
-                Yii::$app->getSession()->setFlash('danger', 'ERROR: Solo puede valorar una vez cada receta.'); 
+                Yii::$app->getSession()->setFlash('danger', 'Sólo puede valorar una vez cada Receta.'); 
                 return $this->redirect(['recetastbl/index']);
             }
             else{
                 //de ser correcta la validacion por post, se redirige a la lista de recetas y no a la
                 //de puntuaciones, ya que el llamado proviene de la primera
                 $model->save();
-                Yii::$app->getSession()->setFlash('success', 'Receta valorada con exito.');
+                Yii::$app->getSession()->setFlash('success', 'Receta valorada con éxito.');
                 return $this->redirect(['recetastbl/index']);
             }
         } else {
             //se envian a la vista los elementos provenientes del controlador
             return $this->render('create', [
-                        'model' => $model,
-                        'model2' => $model2,
-                        'usuarios' => $usuarios,
-                        'recetas' => $recetas
+                'model' => $model,
+                'model2' => $model2,
+                'usuarios' => $usuarios,
+                'recetas' => $recetas
             ]);
         }
     }
@@ -137,10 +137,10 @@ class PuntuaciontblController extends Controller {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
-                        'model' => $model,
-                        'model2' => $model2,
-                        'usuarios' => $usuarios,
-                        'recetas' => $recetas
+                'model' => $model,
+                'model2' => $model2,
+                'usuarios' => $usuarios,
+                'recetas' => $recetas
             ]);
         }
     }
@@ -166,31 +166,28 @@ class PuntuaciontblController extends Controller {
         $cocineros = \app\models\Usuariostbl::find()->all();
         $puntuaciones = Puntuaciontbl::find()->all();
         $index = 0;
+        
         foreach ($cocineros as $cocinero) { 
             $acumulado = 0; 
+            
             foreach ($puntuaciones as $puntuacion) {
-
                 if ($puntuacion->recetastbl->usuariostbl->id == $cocinero->id) {
-
                     $acumulado += $puntuacion->valoracion;
                 }
             }
             $acumuladoArray[$index] = $acumulado; 
-
             $index++;
         }
-
         rsort($acumuladoArray);
-
         $index2 = 0;
+        
         while ($index2 < count($acumuladoArray)) {
 
             foreach ($cocineros as $cocinero) { 
                 $acumulado = 0; 
+                
                 foreach ($puntuaciones as $puntuacion) {
-
                     if ($puntuacion->recetastbl->usuariostbl->id == $cocinero->id) {
-
                         $acumulado += $puntuacion->valoracion;
                     }
                 } 
@@ -203,14 +200,13 @@ class PuntuaciontblController extends Controller {
                 if ($index2 == count($acumuladoArray)) {
                     break;
                 }
-
                 $index++;
             }
         }
 
         return $this->render('masestrellas', [
-                    'cocinerosArray' => $cocinerosArray,
-                    'acumuladoArray' => $acumuladoArray
+            'cocinerosArray' => $cocinerosArray,
+            'acumuladoArray' => $acumuladoArray
         ]);
     }
 
@@ -225,7 +221,7 @@ class PuntuaciontblController extends Controller {
         if (($model = Puntuaciontbl::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException('La página solicitada no existe.');
         }
     }
 

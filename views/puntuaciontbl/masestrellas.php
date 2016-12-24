@@ -28,26 +28,21 @@ $this->params['breadcrumbs'][] = $this->title;
         <tbody>
             <?php
             for ($i = 0; $i < count($cocinerosArray); $i++) {
-                ?>
-
+            ?>
                 <tr>
                     <td><?= $i + 1 ?></td> 
                     <td><?= $cocinerosArray[$i]->nombre ?> <?= $cocinerosArray[$i]->apellido ?></td>
                     <td><?= $acumuladoArray[$i] ?></td>
                 </tr>
-
-
-                <?php
+            <?php
             }
             ?>
-
-
         </tbody>
     </table>
 </div>
 
-
 <div>
     <a class="btn btn-default" href="../web/index.php">Volver al Inicio &raquo;</a>
 </div>
+
 </div>
